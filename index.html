@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projeto: Nós Dois</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div id="camadaConfete" aria-hidden="true"></div>
+    <div id="particulasFundo" class="particulas-fundo" aria-hidden="true"></div>
+
+    <section id="intro" class="intro-cinematografica">
+      <div id="particulasIntro" class="particulas"></div>
+      <div id="coracoesIntro" class="coracoes-intro"></div>
+
+      <div class="intro-conteudo vidro">
+        <p class="intro-selo">Criado com carinho</p>
+        <h1>Projeto: Nós Dois</h1>
+        <p class="intro-subtitulo">Uma experiência criada especialmente para você.</p>
+        <button id="botaoIniciar" class="botao-principal">Iniciar Experiência</button>
+      </div>
+    </section>
+
+    <audio id="musicaFundo" preload="none" loop>
+      <source src="./assets/musica.mp3" type="audio/mpeg" />
+    </audio>
+
+    <main id="experiencia" class="experiencia escondido">
+      <section class="secao vidro revelar">
+        <h2>Contagem Regressiva</h2>
+        <p class="texto-destaque">Contando cada segundo para celebrar você.</p>
+
+        <div class="contador">
+          <div class="tempo-card">
+            <span id="horas" class="tempo-valor">00</span>
+            <span class="tempo-legenda">Horas</span>
+          </div>
+
+          <span class="tempo-divisor">:</span>
+
+          <div class="tempo-card">
+            <span id="minutos" class="tempo-valor">00</span>
+            <span class="tempo-legenda">Minutos</span>
+          </div>
+
+          <span class="tempo-divisor">:</span>
+
+          <div class="tempo-card">
+            <span id="segundos" class="tempo-valor">00</span>
+            <span class="tempo-legenda">Segundos</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="secao vidro revelar">
+        <h2>Mensagens Interativas</h2>
+        <p class="texto-destaque">Cada clique revela mais um pedaço do que sinto por você.</p>
+
+        <button id="botaoMensagem" class="botao-secundario">Revelar Mensagem</button>
+
+        <article id="painelMensagem" class="painel-mensagem">
+          <p id="textoMensagem">Clique para revelar a primeira mensagem.</p>
+        </article>
+      </section>
+
+      <section class="secao vidro revelar">
+        <h2>Nossas Memórias</h2>
+        <p class="texto-destaque">
+          Momentos que ficaram gravados e continuam fazendo sentido no presente.
+        </p>
+        <!-- Para trocar as imagens do carrossel, edite o array MEMORIAS em main.js -->
+        <div class="carrossel">
+          <button id="anteriorMemoria" class="seta-carrossel" aria-label="Imagem anterior">
+            &#10094;
+          </button>
+
+          <div class="janela-faixa">
+            <div id="faixaMemorias" class="faixa-memorias"></div>
+          </div>
+
+          <button id="proximaMemoria" class="seta-carrossel" aria-label="Próxima imagem">
+            &#10095;
+          </button>
+        </div>
+
+        <div id="indicadoresMemorias" class="indicadores"></div>
+        <div class="acoes-memorias">
+          <button id="removerMemoria" class="botao-remover-imagem" type="button">
+            Remover imagem atual
+          </button>
+        </div>
+      </section>
+
+      <section class="secao-presente revelar">
+        <button id="botaoPresente" class="botao-presente">Abrir Presente</button>
+      </section>
+    </main>
+
+    <section id="declaracaoFinal" class="declaracao-final">
+      <div class="brilho-fundo"></div>
+      <div id="coracoesFinal" class="coracoes-finais" aria-hidden="true"></div>
+
+      <div class="declaracao-conteudo vidro">
+        <div class="coracao-pulsante" aria-hidden="true"></div>
+
+        <h2>Feliz aniversário.</h2>
+        <p>
+          Que esse novo ano da sua vida seja leve, intenso e cheio de coisas boas.
+          <br />
+          Que você conquiste o que quiser conquistar.
+        </p>
+        <p>
+          E se eu puder estar ao seu lado enquanto isso acontece,
+          <br />
+          já vai ser um privilégio.
+        </p>
+        <p class="linha-final">
+          Se isso é um código, então você é a melhor parte do meu sistema.
+        </p>
+
+        <button id="botaoFecharFinal" class="botao-secundario">Guardar esse momento</button>
+      </div>
+    </section>
+
+    <script src="./main.js"></script>
+  </body>
+</html>
