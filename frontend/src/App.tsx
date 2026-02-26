@@ -102,7 +102,7 @@ function App() {
     calcularContagem(alvoContagemRef.current, new Date())
   );
 
-  const [fragments, setFragments] = useState<string[]>([]);
+  const [fragments, setFragments] = useState<Fragmento[]>([]);
   const [mensagemAtiva, setMensagemAtiva] = useState<string | null>(null);
   const [terminalAberto, setTerminalAberto] = useState(false);
   const [desafioConcluido, setDesafioConcluido] = useState(false);
@@ -275,15 +275,16 @@ function App() {
     void carregarImagens();
   }, [carregarImagens]);
 
-  const revelarFragmento = useCallback((fragmento: Fragmento, mensagem: string) => {
-    setFragments((atual) => {
-      if (atual.includes(fragmento)) {
-        return atual;
+  const revelarFragmento = useCallback(
+    (fragmento: Fragmento, mensagem: string) => {
+      if (fragments.includes(fragmento)) {
+        return;
       }
+      setFragments((atual) => [...atual, fragmento]);
       setMensagemAtiva(mensagem);
-      return [...atual, fragmento];
-    });
-  }, []);
+    },
+    [fragments]
+  );
 
   const enviarImagem = useCallback(
     async (arquivo: File | null, senha: string): Promise<RetornoAcao> => {

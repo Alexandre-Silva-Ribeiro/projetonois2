@@ -222,6 +222,16 @@ body {
   text-transform: capitalize;
 }
 
+.painel-jogo {
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.painel-jogo * {
+  touch-action: manipulation;
+}
+
 .status-jogo {
   margin: 0.82rem 0 0;
   color: #c5d2eb;

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import useTouchZoomLock from "../hooks/useTouchZoomLock";
 
 type CatHuntGameProps = {
   done: boolean;
@@ -77,6 +78,7 @@ function tocarSomAcerto() {
 }
 
 function CatHuntGame({ done, onSuccess }: CatHuntGameProps) {
+  const zoomLockHandlers = useTouchZoomLock();
   const [acertos, setAcertos] = useState(done ? META_ACERTOS : 0);
   const [visivel, setVisivel] = useState(false);
   const [posicao, setPosicao] = useState<Posicao>(() => sortearPosicao());
@@ -195,7 +197,7 @@ function CatHuntGame({ done, onSuccess }: CatHuntGameProps) {
   };
 
   return (
-    <article className="painel painel-jogo">
+    <article className="painel painel-jogo" {...zoomLockHandlers}>
       <header className="cabecalho-jogo">
         <h2>Jogo 2: encontre o gato na noite</h2>
         <p className="texto-apoio">

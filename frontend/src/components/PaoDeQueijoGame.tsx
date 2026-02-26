@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import useTouchZoomLock from "../hooks/useTouchZoomLock";
 
 type PaoDeQueijoGameProps = {
   done: boolean;
@@ -52,6 +53,7 @@ function classeCamada(camada: Pao["camada"]): string {
 }
 
 function PaoDeQueijoGame({ done, onSuccess }: PaoDeQueijoGameProps) {
+  const zoomLockHandlers = useTouchZoomLock();
   const [encontrados, setEncontrados] = useState<number[]>([]);
   const [efeitos, setEfeitos] = useState<Efeito[]>([]);
   const [status, setStatus] = useState(
@@ -110,7 +112,7 @@ function PaoDeQueijoGame({ done, onSuccess }: PaoDeQueijoGameProps) {
   };
 
   return (
-    <article className="painel painel-jogo">
+    <article className="painel painel-jogo" {...zoomLockHandlers}>
       <header className="cabecalho-jogo">
         <h2>Jogo 3: encontre os pães de queijo</h2>
         <p className="texto-apoio">

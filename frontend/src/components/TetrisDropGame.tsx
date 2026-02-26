@@ -6,6 +6,7 @@ import {
   useState,
   type PointerEvent as ReactPointerEvent,
 } from "react";
+import useTouchZoomLock from "../hooks/useTouchZoomLock";
 
 type Tetromino = "I" | "O" | "T" | "S" | "Z" | "J" | "L";
 type Celula = Tetromino | null;
@@ -297,6 +298,7 @@ function classeCor(tipo: Tetromino | null): string {
 }
 
 function TetrisDropGame({ done, onSuccess }: TetrisDropGameProps) {
+  const zoomLockHandlers = useTouchZoomLock();
   const [tabuleiro, setTabuleiro] = useState<Tabuleiro>(() => criarTabuleiroVazio());
   const [pecaAtiva, setPecaAtiva] = useState<PecaAtiva | null>(null);
   const [proximaPeca, setProximaPeca] = useState<Tetromino>("I");
@@ -694,7 +696,7 @@ function TetrisDropGame({ done, onSuccess }: TetrisDropGameProps) {
   }, [proximaPeca]);
 
   return (
-    <article className="painel painel-jogo">
+    <article className="painel painel-jogo" {...zoomLockHandlers}>
       <header className="cabecalho-jogo">
         <h2>Jogo 1: Tetris real</h2>
         <p className="texto-apoio">
