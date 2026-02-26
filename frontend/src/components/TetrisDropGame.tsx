@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 
 type Tetromino = "I" | "O" | "T" | "S" | "Z" | "J" | "L";
 type Celula = Tetromino | null;
@@ -317,6 +324,7 @@ function TetrisDropGame({ done, onSuccess }: TetrisDropGameProps) {
   const lateralAtivoRef = useRef<-1 | 0 | 1>(0);
   const timeoutLateralRef = useRef<number | null>(null);
   const intervaloLateralRef = useRef<number | null>(null);
+  const ultimoToqueRef = useRef(0);
 
   useEffect(() => {
     tabuleiroRef.current = tabuleiro;
@@ -345,6 +353,22 @@ function TetrisDropGame({ done, onSuccess }: TetrisDropGameProps) {
   useEffect(() => {
     doneRef.current = done;
   }, [done]);
+
+  const registrarToque = useCallback((event: ReactPointerEvent<HTMLElement>) => {
+    if (event.pointerType !== "touch") {
+      return false;
+    }
+    event.preventDefault();
+    ultimoToqueRef.current = Date.now();
+    return true;
+  }, []);
+
+  const executarCliqueSemDuplicar = useCallback((acao: () => void) => {
+    if (Date.now() - ultimoToqueRef.current < 260) {
+      return;
+    }
+    acao();
+  }, []);
 
   const preencherFila = useCallback(() => {
     while (filaRef.current.length < 7) {
@@ -678,7 +702,12 @@ function TetrisDropGame({ done, onSuccess }: TetrisDropGameProps) {
         </p>
       </header>
 
-      <div className="tetris-real">
+      <div
+        className="tetris-real"
+        onDoubleClick={(event) => {
+          event.preventDefault();
+        }}
+      >
         <div className="tetris-info">
           <div className="tetris-indicador">
             <small>Pontuação</small>
@@ -757,62 +786,90 @@ function TetrisDropGame({ done, onSuccess }: TetrisDropGameProps) {
           </aside>
         </div>
 
-        <div className="tetris-controles">
+        <div className="tetris-controles" role="group" aria-label="Controles do Tetris">
           <button
             type="button"
-            className="botao-secundario tetris-botao-simbolo"
-            onPointerDown={() => iniciarRepeticaoLateral(-1)}
+            className="botao-secundario tetris-botao-simbolo tetris-botao-esquerda"
+            onPointerDown={(event) => {
+              registrarToque(event);
+              iniciarRepeticaoLateral(-1);
+            }}
             onPointerUp={pararRepeticaoLateral}
             onPointerLeave={pararRepeticaoLateral}
             onPointerCancel={pararRepeticaoLateral}
             aria-label="Mover para a esquerda"
             title="Mover para a esquerda"
           >
-            {"\u2190"}
+            <span className="tetris-icone">{"\u2190"}</span>
+            <span className="tetris-legenda">Esquerda</span>
           </button>
           <button
             type="button"
-            className="botao-secundario tetris-botao-simbolo"
-            onClick={rotacionar}
+            className="botao-secundario tetris-botao-simbolo tetris-botao-girar"
+            onPointerDown={(event) => {
+              if (registrarToque(event)) {
+                rotacionar();
+              }
+            }}
+            onClick={() => executarCliqueSemDuplicar(rotacionar)}
             aria-label="Girar peça"
             title="Girar peça"
           >
-            {"\u21BB"}
+            <span className="tetris-icone">{"\u21BB"}</span>
+            <span className="tetris-legenda">Girar</span>
           </button>
           <button
             type="button"
-            className="botao-secundario tetris-botao-simbolo"
-            onPointerDown={() => setQuedaSuaveAtiva(true)}
+            className="botao-secundario tetris-botao-simbolo tetris-botao-descer"
+            onPointerDown={(event) => {
+              registrarToque(event);
+              setQuedaSuaveAtiva(true);
+            }}
             onPointerUp={() => setQuedaSuaveAtiva(false)}
             onPointerLeave={() => setQuedaSuaveAtiva(false)}
             onPointerCancel={() => setQuedaSuaveAtiva(false)}
             aria-label="Queda suave"
             title="Queda suave"
           >
-            {"\u2193"}
+            <span className="tetris-icone">{"\u2193"}</span>
+            <span className="tetris-legenda">Suave</span>
           </button>
           <button
             type="button"
-            className="botao-secundario tetris-botao-simbolo"
-            onClick={hardDrop}
+            className="botao-secundario tetris-botao-simbolo tetris-botao-forte"
+            onPointerDown={(event) => {
+              if (registrarToque(event)) {
+                hardDrop();
+              }
+            }}
+            onClick={() => executarCliqueSemDuplicar(hardDrop)}
             aria-label="Queda forte"
             title="Queda forte"
           >
-            {"\u21E3"}
+            <span className="tetris-icone">{"\u21E3"}</span>
+            <span className="tetris-legenda">Forte</span>
           </button>
           <button
             type="button"
-            className="botao-secundario tetris-botao-simbolo"
-            onPointerDown={() => iniciarRepeticaoLateral(1)}
+            className="botao-secundario tetris-botao-simbolo tetris-botao-direita"
+            onPointerDown={(event) => {
+              registrarToque(event);
+              iniciarRepeticaoLateral(1);
+            }}
             onPointerUp={pararRepeticaoLateral}
             onPointerLeave={pararRepeticaoLateral}
             onPointerCancel={pararRepeticaoLateral}
             aria-label="Mover para a direita"
             title="Mover para a direita"
           >
-            {"\u2192"}
+            <span className="tetris-icone">{"\u2192"}</span>
+            <span className="tetris-legenda">Direita</span>
           </button>
         </div>
+        <p className="tetris-guia">
+          Segure {"\u2190"} {"\u2192"} {"\u2193"} para controle fino. Toque em {"\u21BB"} para
+          girar e em {"\u21E3"} para queda forte.
+        </p>
       </div>
 
       <p className="status-jogo">{status}</p>
@@ -821,3 +878,4 @@ function TetrisDropGame({ done, onSuccess }: TetrisDropGameProps) {
 }
 
 export default TetrisDropGame;
+
